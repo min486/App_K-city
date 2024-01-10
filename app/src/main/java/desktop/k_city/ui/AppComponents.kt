@@ -4,7 +4,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,7 +31,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -40,6 +45,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import desktop.k_city.R
+import desktop.k_city.ui.theme.LightBlue
 import desktop.k_city.ui.theme.LightYellow
 
 @Composable
@@ -148,7 +154,7 @@ fun CityCard(
                     .wrapContentWidth()
                     .wrapContentHeight()
                     .clickable {
-                        val cityName = if (image == R.drawable.seoul) "Seoul" else "Busan"
+                        val cityName = if (image == R.drawable.seoul) "서울" else "부산"
                         citySelected(cityName)  // 이미지 클릭하면 값 전달
 
                         localFocusManager.clearFocus()  // 이미지 클릭하면 키보드 내리기
@@ -173,7 +179,7 @@ fun ButtonComponent(
     Button(
         modifier = Modifier.fillMaxWidth(),
         onClick = {
-
+            goToDetailsScreen()
         },
         colors = ButtonDefaults.buttonColors(containerColor = LightYellow)
     ) {
@@ -183,4 +189,62 @@ fun ButtonComponent(
             colorValue = Color.DarkGray
         )
     }
+}
+
+@Composable
+fun TextWithShadow(value: String) {
+    val shadowOffset = Offset(x = 1f, y = 2f)
+    Text(
+        text = value,
+        color = Color.White,
+        fontSize = 24.sp,
+        fontWeight = FontWeight.Light,
+        style = TextStyle(
+            shadow = Shadow(Color.Yellow, shadowOffset, 4f)
+        )
+    )
+}
+
+@Composable
+fun FactCard(value: String) {
+    Card(
+        modifier = Modifier
+            .padding(32.dp)
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(8.dp),
+        elevation = CardDefaults.cardElevation(4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = LightBlue
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(18.dp, 24.dp)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.quote),
+                contentDescription = "Quote Image",
+                modifier = Modifier
+                    .rotate(180f)
+                    .size(20.dp)
+            )
+
+            Spacer(modifier = Modifier.size(24.dp))
+
+            TextWithShadow(value = value)
+
+            Spacer(modifier = Modifier.size(24.dp))
+
+            Image(
+                painter = painterResource(id = R.drawable.quote),
+                contentDescription = "Quote Image",
+                modifier = Modifier.size(20.dp)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun FactCardPreview() {
+    FactCard(value = "abcd")
 }

@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import desktop.k_city.R
@@ -29,7 +28,10 @@ import desktop.k_city.ui.TopBar
 import desktop.k_city.ui.UserInputViewModel
 
 @Composable
-fun UserInputScreen(userInputViewModel: UserInputViewModel) {
+fun UserInputScreen(
+    userInputViewModel: UserInputViewModel,
+    showWelcomeScreen: (valuesPair: Pair<String, String>) -> Unit
+) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         // color = Color.Black
@@ -83,7 +85,7 @@ fun UserInputScreen(userInputViewModel: UserInputViewModel) {
                                 UserDataUiEvents.CitySelected(it)
                             )
                         },
-                        selected = userInputViewModel.uiState.value.citySelected == "Seoul"
+                        selected = userInputViewModel.uiState.value.citySelected == "서울"
                     )
                 }
 
@@ -97,7 +99,7 @@ fun UserInputScreen(userInputViewModel: UserInputViewModel) {
                                 UserDataUiEvents.CitySelected(it)
                             )
                         },
-                        selected = userInputViewModel.uiState.value.citySelected == "Busan"
+                        selected = userInputViewModel.uiState.value.citySelected == "부산"
                     )
                 }
             }
@@ -108,7 +110,12 @@ fun UserInputScreen(userInputViewModel: UserInputViewModel) {
             if (userInputViewModel.isValidState()) {
                 ButtonComponent(
                     goToDetailsScreen = {
-
+                        showWelcomeScreen(
+                            Pair(
+                                userInputViewModel.uiState.value.nameEntered,
+                                userInputViewModel.uiState.value.citySelected
+                            )
+                        )
                     }
                 )
             }
@@ -117,8 +124,8 @@ fun UserInputScreen(userInputViewModel: UserInputViewModel) {
     }
 }
 
-@Preview
-@Composable
-fun UserInputScreenPreview() {
-    UserInputScreen(UserInputViewModel())
-}
+//@Preview
+//@Composable
+//fun UserInputScreenPreview() {
+//    UserInputScreen(UserInputViewModel())
+//}
